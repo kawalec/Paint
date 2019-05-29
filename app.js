@@ -1,12 +1,20 @@
 window.onload = () => {
   Paint.init();
   Paint.getProperty();
-  //   Paint.line();
-  Paint.draw();
   Paint.clear();
+  document.querySelector("#drawMode").addEventListener("change", () => {
+    switch (Paint.drawMode) {
+      case "draw":
+        Paint.draw();
+        break;
+      case "line":
+        Paint.line();
+        break;
+      default:
+        Paint.draw();
+    }
+  });
 };
-
-const Var = {};
 
 const Paint = {
   init: () => {
@@ -16,11 +24,19 @@ const Paint = {
     Paint.canvas.height = 450;
   },
   getProperty: () => {
+    Paint.color = document.querySelector("#color").value;
+    Paint.size = document.querySelector("#size").value;
+    Paint.drawMode = document.querySelector("#drawMode").value;
+
     color.addEventListener("change", () => {
       Paint.color = document.querySelector("#color").value;
     });
     size.addEventListener("change", () => {
       Paint.size = document.querySelector("#size").value;
+    });
+    drawMode.addEventListener("change", () => {
+      Paint.drawMode = document.querySelector("#drawMode").value;
+      console.log(Paint.drawMode);
     });
   },
   line: () => {
