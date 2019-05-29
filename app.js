@@ -1,7 +1,8 @@
 window.onload = () => {
   Paint.init();
   Paint.getProperty();
-  Paint.draw();
+  Paint.line();
+  Paint.clear();
 };
 
 const Var = {};
@@ -21,9 +22,11 @@ const Paint = {
       Paint.size = document.querySelector("#size").value;
     });
   },
-  draw: () => {
+  line: () => {
     Paint.canvas.addEventListener("mousedown", e => {
       Paint.ctx.beginPath();
+      Paint.ctx.strokeStyle = Paint.color;
+      Paint.ctx.lineWidth = Paint.size;
       Paint.ctx.moveTo(
         Paint.getMousePosition(e).x,
         Paint.getMousePosition(e).y
@@ -35,6 +38,12 @@ const Paint = {
         Paint.getMousePosition(e).y
       );
       Paint.ctx.stroke();
+      Paint.ctx.closePath();
+    });
+  },
+  draw: () => {
+    Paint.canvas.addEventListener("mousedown", () => {
+      Paint.canvas.addEventListener("mousemove", () => {});
     });
   },
   getMousePosition: e => {
@@ -42,5 +51,10 @@ const Paint = {
       x: e.x - Paint.canvas.getBoundingClientRect().x,
       y: e.y - Paint.canvas.getBoundingClientRect().y
     };
+  },
+  clear: () => {
+    document.querySelector("#clear").addEventListener("click", () => {
+      Paint.ctx.clearRect(0, 0, Paint.canvas.width, Paint.canvas.height);
+    });
   }
 };
