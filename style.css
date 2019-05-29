@@ -1,0 +1,14 @@
+#canvas {
+  cursor: crosshair;
+  border: 1px solid black;
+  margin: 20px;
+}
+
+#toolbar {
+  width: 400px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
