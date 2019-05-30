@@ -1,6 +1,7 @@
 window.onload = () => {
   Paint.init();
   Paint.getProperty();
+  Paint.uploadImage();
   Paint.clear();
   document.querySelector("#drawMode").addEventListener("change", () => {
     switch (Paint.drawMode) {
@@ -87,6 +88,33 @@ const Paint = {
       lastPositionY = Paint.getMousePosition(e).y;
     });
   },
+  uploadImage: () => {
+    let image = new Image();
+    document.querySelector("#file").addEventListener("change", e => {
+      let files = e.target.files;
+      let file = files[0];
+      if (file.type.match("image.*")) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.addEventListener("load", e => {
+          if (e.target.readyState == FileReader.DONE) {
+            image.src = e.target.result;
+            // console.log(image);
+            Paint.ctx.drawImage(image, 0, 0);
+          }
+        });
+      } else {
+        alert("Not an image!");
+      }
+    });
+  },
+  // uploadImage: () => {
+  //   const image = new Image();
+  //   image.src = "bg.jpg";
+  //   image.addEventListener("load", () => {
+  //     Paint.ctx.drawImage(image, 0, 0);
+  //   });
+  // },
   getMousePosition: e => {
     return {
       x: e.x - Paint.canvas.getBoundingClientRect().x,
