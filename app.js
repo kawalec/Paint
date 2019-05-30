@@ -14,8 +14,9 @@ window.onload = () => {
       case "rectangle":
         Paint.rectangle();
         break;
-      // default:
-      //   Paint.draw();
+      case "circle":
+        Paint.circle();
+        break;
     }
   });
 };
@@ -100,8 +101,8 @@ const Paint = {
     Paint.canvas.addEventListener("mousedown", e => {
       Paint.ctx.strokeStyle = Paint.color;
       Paint.ctx.lineWidth = Paint.size;
-      lastPositionX = Paint.getMousePosition(e).x;
-      lastPositionY = Paint.getMousePosition(e).y;
+      let lastPositionX = Paint.getMousePosition(e).x;
+      let lastPositionY = Paint.getMousePosition(e).y;
     });
     Paint.canvas.addEventListener("mouseup", e => {
       Paint.ctx.strokeRect(
@@ -110,6 +111,34 @@ const Paint = {
         Paint.getMousePosition(e).x - lastPositionX,
         Paint.getMousePosition(e).y - lastPositionY
       );
+    });
+  },
+  circle: () => {
+    Paint.canvas.addEventListener("mousedown", e => {
+      Paint.ctx.strokeStyle = Paint.color;
+      Paint.ctx.lineWidth = Paint.size;
+      lastPositionX = Paint.getMousePosition(e).x;
+      lastPositionY = Paint.getMousePosition(e).y;
+    });
+    Paint.canvas.addEventListener("mouseup", e => {
+      console.log(lastPositionX);
+      console.log(Paint.getMousePosition(e).x);
+      Paint.ctx.beginPath();
+      Paint.ctx.strokeStyle = Paint.color;
+      Paint.ctx.lineWidth = Paint.size;
+      Paint.ctx.arc(
+        lastPositionX,
+        lastPositionY,
+        Math.abs(
+          Math.max(
+            Paint.getMousePosition(e).x - lastPositionX,
+            Paint.getMousePosition(e).y - lastPositionY
+          )
+        ),
+        0,
+        2 * Math.PI
+      );
+      Paint.ctx.stroke();
     });
   },
   uploadImage: () => {
