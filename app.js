@@ -11,10 +11,17 @@ window.onload = () => {
       case "line":
         Paint.line();
         break;
-      default:
-        Paint.draw();
+      case "rectangle":
+        Paint.rectangle();
+        break;
+      // default:
+      //   Paint.draw();
     }
   });
+};
+
+const Var = {
+  canDraw: false
 };
 
 const Paint = {
@@ -60,10 +67,10 @@ const Paint = {
     });
   },
   draw: () => {
-    let canDraw = false;
+    Var.canDraw = false;
     Paint.canvas.addEventListener("mousemove", e => {
       Paint.canvas.addEventListener("mousedown", () => {
-        canDraw = true;
+        Var.canDraw = true;
         let lastPositionX = Paint.getMousePosition(e).x;
         let lastPositionY = Paint.getMousePosition(e).y;
       });
@@ -72,7 +79,7 @@ const Paint = {
         canDraw = false;
       });
 
-      if (canDraw) {
+      if (Var.canDraw) {
         Paint.ctx.beginPath();
         Paint.ctx.strokeStyle = Paint.color;
         Paint.ctx.lineWidth = Paint.size;
@@ -86,6 +93,23 @@ const Paint = {
       }
       lastPositionX = Paint.getMousePosition(e).x;
       lastPositionY = Paint.getMousePosition(e).y;
+    });
+  },
+  rectangle: e => {
+    let lastPositionX, lastPositionY;
+    Paint.canvas.addEventListener("mousedown", e => {
+      Paint.ctx.strokeStyle = Paint.color;
+      Paint.ctx.lineWidth = Paint.size;
+      lastPositionX = Paint.getMousePosition(e).x;
+      lastPositionY = Paint.getMousePosition(e).y;
+    });
+    Paint.canvas.addEventListener("mouseup", e => {
+      Paint.ctx.strokeRect(
+        lastPositionX,
+        lastPositionY,
+        Paint.getMousePosition(e).x - lastPositionX,
+        Paint.getMousePosition(e).y - lastPositionY
+      );
     });
   },
   uploadImage: () => {
@@ -108,13 +132,6 @@ const Paint = {
       }
     });
   },
-  // uploadImage: () => {
-  //   const image = new Image();
-  //   image.src = "bg.jpg";
-  //   image.addEventListener("load", () => {
-  //     Paint.ctx.drawImage(image, 0, 0);
-  //   });
-  // },
   getMousePosition: e => {
     return {
       x: e.x - Paint.canvas.getBoundingClientRect().x,
